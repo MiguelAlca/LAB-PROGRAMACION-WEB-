@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruta</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('home') }}">Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('ruta') }}">Ruta</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('camiones') }}">Camiones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('contacto') }}">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Calcula tu Ruta</h1>
+        <div class="form-container mx-auto" style="max-width: 600px;">
+            <form id="route-form">
+                <div class="mb-3">
+                    <label for="origen" class="form-label">Punto de inicio:</label>
+                    <input type="text" id="origen" class="form-control" placeholder="Ejemplo: Monterrey, NL" required>
+                </div>
+                <div class="mb-3">
+                    <label for="destino" class="form-label">Punto de destino:</label>
+                    <input type="text" id="destino" class="form-control" placeholder="Ejemplo: Saltillo, Coahuila" required>
+                </div>
+                <button type="button" id="calcular-ruta" class="btn btn-primary w-100">Calcular Ruta</button>
+            </form>
+        </div>
+        <div id="map" class="mt-4"></div>
+        <!-- Contenedor para los resultados -->
+        <div id="resultado" class="alert alert-info mt-4" style="display: none;">
+            <h5>Resultados:</h5>
+            <p id="distancia"></p>
+            <p id="duracion"></p>
+        </div>
+    </div>
+
+    <!-- Agregar la API de Google Maps -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUGC_OhnGJS-dMEEn20FqlPAMp8nD2o64&callback=initMap" async defer></script>
+    <!-- JavaScript propio -->
+    <script src="{{ url_for('static', filename='js/ruta.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Datos de Contactos{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h1>Lista de Contactos</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Mensaje</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contacto in contactos %}
+            <tr>
+                <td>{{ contacto[0] }}</td>
+                <td>{{ contacto[1] }}</td>
+                <td>{{ contacto[2] }}</td>
+                <td>{{ contacto[3] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

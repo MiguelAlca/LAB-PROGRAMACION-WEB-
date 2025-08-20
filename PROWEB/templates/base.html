@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Título por defecto{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Incluir CSS de Leaflet para el mapa -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+    <!-- Barra de navegación con menú adaptable -->
+    <div class="navbar">
+        <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button>
+        <ul class="menu">
+            <li><a href="{{ url_for('home') }}">Inicio</a></li>
+            
+            <li><a href="{{ url_for('servicios') }}">Servicios</a></li>
+            <li><a href="{{ url_for('contacto') }}">Contacto</a></li>
+            <li><a href="{{ url_for('ruta') }}">Ruta</a></li>
+            {% if session.get('rol') == 'admin' %}
+                <li><a href="{{ url_for('camiones') }}">Camiones</a></li>
+                <li><a href="{{ url_for('personal') }}">Personal</a></li>
+                <li><a href="{{ url_for('ver_datos') }}">Ver Datos</a></li>
+                <li><a href="{{ url_for('ver_usuarios') }}">Registro usuarios</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Incluir JS de Leaflet para el mapa -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- Enlace al archivo de scripts para el menú adaptable -->
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>
