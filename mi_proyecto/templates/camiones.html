@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Camiones{% endblock %}
+
+{% block content %}
+<h1>Fichas Técnicas de Camiones</h1>
+
+<!-- Formulario para añadir nueva ficha técnica -->
+<form method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="modelo">Modelo:</label>
+        <input type="text" id="modelo" name="modelo" required>
+    </div>
+    <div class="form-group">
+        <label for="anio">Año:</label>
+        <input type="number" id="anio" name="anio" required>
+    </div>
+    <div class="form-group">
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" name="descripcion" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="imagen">Imagen:</label>
+        <input type="file" id="imagen" name="imagen" required>
+    </div>
+    <button type="submit">Añadir Ficha Técnica</button>
+</form>
+
+<!-- Mostrar fichas técnicas existentes -->
+<div class="fichas-tecnicas">
+    {% for camion in camiones %}
+    <div class="ficha">
+        <h2>{{ camion[1] }} ({{ camion[2] }})</h2>
+        <p>{{ camion[3] }}</p>
+        <img src="{{ url_for('static', filename='uploads/' ~ camion[4]) }}" alt="Imagen de {{ camion[1] }}">
+        <!-- Formulario para eliminar la ficha técnica -->
+        <form method="POST" action="{{ url_for('eliminar_camion', camion_id=camion[0]) }}" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta ficha técnica?');">
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

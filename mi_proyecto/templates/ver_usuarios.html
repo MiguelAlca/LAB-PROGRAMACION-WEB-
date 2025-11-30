@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Usuarios</title>
+    <style>
+        /* Reset de márgenes y rellenos */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Estilo para el cuerpo de la página */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('/static/CAMIONQW.webp'); /* Fondo de la página */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Fija la imagen de fondo */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        /* Barra de navegación */
+        nav {
+            background-color: #333; /* Color de fondo del menú */
+            position: fixed; /* Fijar el menú en la parte superior */
+            top: 0; /* Asegurarse de que esté en la parte superior */
+            width: 100%; /* Asegurarse de que ocupe todo el ancho */
+            z-index: 1000; /* Asegurarse de que esté encima de otros */
+            padding: 10px 20px; /* Ajuste del padding para la barra */
+        }
+        .navbar .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+.navbar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.navbar li {
+    margin: 0 15px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: block;
+    background-color: #333; /* Fondo visible por defecto */
+}
+
+.navbar a:hover {
+    background-color: #575757; /* Cambio de color al pasar el puntero */
+}
+
+/* Para dispositivos móviles */
+@media (max-width: 768px) {
+    .navbar .menu-toggle {
+        display: block; /* Mostrar botón de hamburguesa */
+    }
+
+    .navbar ul {
+        display: none; /* Ocultar el menú inicialmente */
+        flex-direction: column; /* Estilo vertical */
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        background-color: #333;
+        z-index: 1000;
+    }
+
+    .navbar ul.show {
+        display: flex; /* Mostrar menú desplegado */
+    }
+
+    .navbar li {
+        margin: 10px 0; /* Separación vertical */
+    }
+}
+
+       
+
+
+        /* Estilos para el contenedor principal */
+        .container {
+            padding-top: 80px; /* Deja espacio para el menú */
+            width: 80%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .usuarios-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .usuarios-table th, .usuarios-table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .usuarios-table th {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <!-- Barra de navegación -->
+    <div class="navbar">
+        <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button>
+        <ul class="menu">
+            <li><a href="{{ url_for('home') }}">Inicio</a></li>
+            
+            <li><a href="{{ url_for('servicios') }}">Servicios</a></li>
+            <li><a href="{{ url_for('contacto') }}">Contacto</a></li>
+            <li><a href="{{ url_for('ruta') }}">Ruta</a></li>
+            {% if session.get('rol') == 'admin' %}
+                <li><a href="{{ url_for('camiones') }}">Camiones</a></li>
+                <li><a href="{{ url_for('personal') }}">Personal</a></li>
+                <li><a href="{{ url_for('ver_datos') }}">Ver Datos</a></li>
+                <li><a href="{{ url_for('ver_usuarios') }}">Registro usuarios</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="container">
+        <h1>Lista de Usuarios</h1>
+        <table class="usuarios-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre de Usuario</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if users %}
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user[0] }}</td>
+                        <td>{{ user[1] }}</td>
+                        <td>{{ user[2] }}</td>
+                        <td>{{ user[3] }}</td>
+                        
+                        <td>
+                            <!-- Enlace para editar -->
+                            <a href="{{ url_for('editar_usuario', user_id=user[0]) }}">
+                                <button class="edit-btn">Editar</button>
+                            </a>
+                            <!-- Enlace para eliminar -->
+                            <a href="{{ url_for('eliminar_usuario', user_id=user[0]) }}" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?')">
+                                <button class="delete-btn">Eliminar</button>
+                            </a>
+                        </td>
+                        
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5">No hay usuarios disponibles</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Red Cargo
+{% endblock %}
+
+{% block content %}
+    <h1>Bienvenidos a Red Cargo: Su Socio Confiable en Transporte de Carga</h1>
+    <p>En Red Cargo, entendemos que el transporte de mercancías es una parte fundamental para el éxito de su negocio. Nos enorgullece ofrecer soluciones logísticas de alta calidad que garantizan rapidez, seguridad y eficiencia en cada uno de nuestros envíos.</p>
+    
+    <h2>¿Quiénes Somos?</h2>
+    <p>Red Cargo es una empresa de transporte de carga que nace con el compromiso de conectar a las empresas con sus destinos de manera segura y oportuna. Con una vasta experiencia en el sector logístico, contamos con una flota moderna y personal altamente capacitado, que trabaja incansablemente para que sus mercancías lleguen a su destino de forma eficiente y confiable.</p>
+
+    {% if 'username' in session %}
+        <h2>Bienvenido, {{ session['username'] }}!</h2>
+        <a href="{{ url_for('logout') }}">Cerrar sesión</a>
+    {% else %}
+        <h2>Bienvenido, por favor inicia sesión.</h2>
+        <a href="{{ url_for('login') }}">Iniciar sesión</a>
+    {% endif %}
+{% endblock %}
+
+
+
