@@ -26,14 +26,17 @@
     <button type="submit">Añadir Ficha Técnica</button>
 </form>
 
-<!-- Mostrar fichas técnicas existentes -->
+
 <div class="fichas-tecnicas">
     {% for camion in camiones %}
     <div class="ficha">
         <h2>{{ camion[1] }} ({{ camion[2] }})</h2>
         <p>{{ camion[3] }}</p>
         <img src="{{ url_for('static', filename='uploads/' ~ camion[4]) }}" alt="Imagen de {{ camion[1] }}">
-        <!-- Formulario para eliminar la ficha técnica -->
+        
+         <a href="{{ url_for('editar_camion', camion_id=camion[0]) }}">
+            <button class="btn btn-primary">Editar</button>
+            </a>
         <form method="POST" action="{{ url_for('eliminar_camion', camion_id=camion[0]) }}" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta ficha técnica?');">
             <button type="submit" class="btn btn-danger">Eliminar</button>
         </form>

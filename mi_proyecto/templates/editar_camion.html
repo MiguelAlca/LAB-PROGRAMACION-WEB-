@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+      
+      body {
+          font-family: 'Poppins', sans-serif;
+          background-image: url('/static/CAMIONQW.webp');
+          background-size: cover;
+          background-position: center;
+          background-attachment: fixed;
+          min-height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
+      }
+      
+      /* Barra de navegación */
+      .navbar {
+          background-color: #333;
+          width: 100%;
+          padding: 10px 0;
+          position: fixed;
+          top: 0;
+          z-index: 1000;
+          text-align: center;
+      }
+      
+      .navbar ul {
+          list-style: none;
+          display: flex;
+          justify-content: center;
+          margin: 0;
+          padding: 0;
+      }
+      
+      .navbar li {
+          margin: 0 15px;
+      }
+      
+      .navbar a {
+          color: white;
+          text-decoration: none;
+          padding: 10px 15px;
+          font-size: 16px;
+          display: inline-block;
+      }
+      
+      .navbar a:hover {
+          background-color: #575757;
+          border-radius: 5px;
+      }
+      
+      /* Contenedor principal */
+      .container {
+          margin-top: 120px; /* Espacio para la barra de navegación */
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
+          width: 100%;
+          padding: 20px;
+      }
+      
+      /* Caja de edición */
+      .edit-user-box {
+          background-color: white;
+          padding: 30px;
+          border-radius: 10px;
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+          max-width: 500px;
+          width: 100%;
+          text-align: center;
+          animation: fadeIn 0.5s ease;
+          margin-top: 20px; /* Para asegurarse de que no quede pegado a la barra */
+      }
+      
+      .edit-user-box h1 {
+          font-size: 24px;
+          margin-bottom: 20px;
+          color: #333;
+      }
+      
+      /* Formulario */
+      .form-group {
+          margin-bottom: 15px;
+          text-align: left;
+      }
+      
+      .form-group label {
+          font-size: 14px;
+          color: #555;
+          font-weight: bold;
+      }
+      
+      .form-group input,
+      .form-group select {
+          width: 100%;
+          padding: 10px;
+          font-size: 14px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          margin-top: 5px;
+      }
+      
+      .form-group input:focus,
+      .form-group select:focus {
+          border-color: #0066cc;
+          outline: none;
+      }
+      
+      /* Botones */
+      .form-buttons {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 20px;
+      }
+      
+      .btn-primary {
+          background-color: #0066cc;
+          color: white;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 5px;
+          text-decoration: none;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+      }
+      
+      .btn-primary:hover {
+          background-color: #004999;
+      }
+      
+      .btn-secondary {
+          background-color: #aaa;
+          color: white;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 5px;
+          text-decoration: none;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+      }
+      
+      .btn-secondary:hover {
+          background-color: #888;
+      }
+      
+      </style>
+      
+    <title>Editar Camiones</title>
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="{{ url_for('ver_usuarios') }}">Ver Usuarios</a></li>
+            <li><a href="{{ url_for('home') }}">Inicio</a></li>
+            <li><a href="{{ url_for('logout') }}">Cerrar Sesión</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="edit-user-box"> <h1>Editar Camión</h1>
+            
+            <form method="POST" action="{{ url_for('editar_camion', camion_id=camion[0]) }}">
+                
+                <div class="form-group">
+                    <label for="modelo">Modelo</label>
+                    <input type="text" id="modelo" name="modelo" value="{{ camion[1] }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="anio">Año</label>
+                    <input type="number" id="anio" name="anio" value="{{ camion[2] }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" name="descripcion" required>{{ camion[3] }}</textarea>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit" class="btn-primary">Guardar Cambios</button>
+                    <a href="{{ url_for('camiones') }}" class="btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

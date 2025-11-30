@@ -194,11 +194,11 @@
                         <td>{{ user[3] }}</td>
                         
                         <td>
-                            <!-- Enlace para editar -->
+                        
                             <a href="{{ url_for('editar_usuario', user_id=user[0]) }}">
                                 <button class="edit-btn">Editar</button>
                             </a>
-                            <!-- Enlace para eliminar -->
+                            
                             <a href="{{ url_for('eliminar_usuario', user_id=user[0]) }}" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?')">
                                 <button class="delete-btn">Eliminar</button>
                             </a>

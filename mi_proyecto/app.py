@@ -4,9 +4,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 import os
 from functools import wraps
-import mysql.connector  # Asegúrate de tenerlo instalado
+import mysql.connector
 
-# Configuración inicial
+
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "super_secret_key")  # Usa una clave secreta para sesiones
 app.secret_key = 'MIGUEL'
@@ -393,7 +393,38 @@ def ver_datos():
     conn.close()
     return render_template('ver_datos.html', contactos=contactos)
 
+# Agrega esto en tu app.py
+@app.route('/editar_camion/<int:camion_id>', methods=['GET', 'POST'])
+@requiere_rol('admin')
+def editar_camion(camion_id):
+    conn = get_db_connection_sqlite()
+    c = conn.cursor()
+    
+    # 1. Buscar el camión
+    c.execute("SELECT * FROM camiones WHERE id = ?", (camion_id,))
+    camion = c.fetchone()
+    
+    if not camion:
+        flash("Camión no encontrado", "danger")
+        return redirect(url_for('camiones'))
 
+    # 2. Si es POST, actualizar datos
+    if request.method == 'POST':
+        modelo = request.form['modelo']
+        anio = request.form['anio']
+        descripcion = request.form['descripcion']
+        # (Aquí podrías agregar lógica para actualizar imagen si quisieras)
+        
+        c.execute("UPDATE camiones SET modelo = ?, anio = ?, descripcion = ? WHERE id = ?",
+                  (modelo, anio, descripcion, camion_id))
+        conn.commit()
+        conn.close()
+        flash("Camión actualizado correctamente", "success")
+        return redirect(url_for('camiones'))
+
+    conn.close()
+    # 3. Si es GET, mostrar el formulario
+    return render_template('editar_camion.html', camion=camion)
 
 @app.route('/personal/', methods=['GET', 'POST'])
 @requiere_rol('admin')
